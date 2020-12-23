@@ -5,26 +5,34 @@ const defaultMsg = "Start guessing...";
 const defaultNum = "?";
 const defaultScore = 20;
 const defaultHighest = 0;
+const rangeUP = 20;
+const rangeDWN = 1;
 
-let defaultSecret = Math.trunc(20*Math.random()) + 1;
-let guess;
+const messageClass = document.querySelector('.message');
+const numberClass = document.querySelector('.number');
+const bodyClass = document.querySelector('body');
+const scoreClass = document.querySelector('.score');
+const guessClass = document.querySelector('.guess');
+const highscoreClass = document.querySelector('.highscore');
+
 let score = defaultScore;
 let gameState = 'game';
 let highestScore = defaultHighest;
+let defaultSecret = Math.trunc(rangeUP*Math.random()) + rangeDWN;
+let guess;
 
 function checkLoss(score){
     if(score === 0) {
-        document.querySelector('.message').textContent = "You loss the game 😭 Play again?";
-        document.querySelector('body').style.backgroundColor = 'rgb(168, 63, 63)'; 
+        messageClass.textContent = "You loss the game 😭 Play again?";
+        bodyClass.style.backgroundColor = 'rgb(168, 63, 63)'; 
         gameState = 'loss';
     }
 }
 
 function clickHandler(){
-    guess = document.querySelector('.guess').value; 
-
+    guess = guessClass.value; 
     if (!guess) {
-        document.querySelector('.message').textContent = "😧No number";
+        messageClass.textContent = "😧No number";
     } else if (gameState === 'loss'){
         return
     } else if (gameState === 'win') {
@@ -32,25 +40,25 @@ function clickHandler(){
     } else{
         let guessNum = Number(guess);
         if (guessNum === defaultSecret){
-            document.querySelector('.message').textContent = "You win!🥇 Play again?";
+            messageClass.textContent = "You win!🥇 Play again?";
             gameState = 'win';   
-            document.querySelector('.number').textContent = defaultSecret;   
-            document.querySelector('body').style.backgroundColor = '#60b347'; 
-            document.querySelector('.number').style.width = '30rem';
+            numberClass.textContent = defaultSecret;   
+            bodyClass.style.backgroundColor = '#60b347'; 
+            numberClass.style.width = '30rem';
             if (score > highestScore) {
                 highestScore = score;
             }
-            document.querySelector('.highscore').textContent = highestScore;
+            highscoreClass.textContent = highestScore;
         } else if (guessNum < defaultSecret){
-            document.querySelector('.message').textContent = "Too low!"        
+            messageClass.textContent = "Too low!"        
             score--;
             checkLoss(score);
-            document.querySelector('.score').textContent = score;           
+            scoreClass.textContent = score;           
         } else if (guessNum > defaultSecret){
-            document.querySelector('.message').textContent = "Too high!"        
+            messageClass.textContent = "Too high!"        
             score--;
             checkLoss(score);
-            document.querySelector('.score').textContent = score;           
+            scoreClass.textContent = score;           
         }
 
     }
@@ -58,16 +66,15 @@ function clickHandler(){
 }
 
 function againHandler(){
-    document.querySelector('.guess').value = '';
-    document.querySelector('body').style.backgroundColor = '#222';
-    document.querySelector('.number').style.width = '15rem';
-    document.querySelector('.message').textContent = 'Start guessing...';
-    document.querySelector('.score').textContent = defaultScore;
-    document.querySelector('.number').textContent = defaultNum;
-    defaultSecret = Math.trunc(20*Math.random()) + 1;
+    guessClass.value = '';
+    bodyClass.style.backgroundColor = '#222';
+    numberClass.style.width = '15rem';
+    messageClass.textContent = 'Start guessing...';
+    scoreClass.textContent = defaultScore;
+    numberClass.textContent = defaultNum;
+    defaultSecret = Math.trunc(rangeUP*Math.random()) + rangeDWN;
     score = defaultScore;
     gameState = 'game';
-
 }
 
 
